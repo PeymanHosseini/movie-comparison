@@ -6,25 +6,21 @@ const fetchData = async search => {
       s: search
     }
   });
-  console.log(response.data);
+  if (response.data.Error) {
+    return [];
+  }
+
+  return response.data.Search;
 };
 const input = document.querySelector("input");
-// reusable function for delay
-const debounse = (func, delay = 1000) => {
-  let timeoutId;
-  // we use ... to spread arg or args to array and use 'apply' function to use it (if we would have arg)
-  return (...args) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      func.apply(null, args);
-    }, delay);
-  };
-};
 
 // onInput function help us to delay search input for 1 sec
-const onInput = e => {
-  fetchData(e.target.value);
+const onInput = async e => {
+  const movies = await fetchData(e.target.value);
+  for (let movie of movies) {
+    const div = document.createElement("div");
+    div.innerHTML = movie.Title;
+    document.querySelector("#target").appendChild(div);
+  }
 };
 input.addEventListener("input", debounse(onInput, 500));
