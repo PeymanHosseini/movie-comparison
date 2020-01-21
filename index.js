@@ -30,13 +30,15 @@ const resultWrapper = document.querySelector(".results");
 // onInput function help us to delay search input for 1 sec
 const onInput = async e => {
   const movies = await fetchData(e.target.value);
-
+  resultWrapper.innerHTML = "";
   dropDown.classList.add("is-active");
+
   for (let movie of movies) {
     const option = document.createElement("a");
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
     option.classList.add("dropdown-item");
     option.innerHTML = `
-    <img src="${movie.Poster}"></img>
+    <img src="${imgSrc}"></img>
     ${movie.Title}
     `;
 
