@@ -46,3 +46,10 @@ const onInput = async e => {
   }
 };
 input.addEventListener("input", debounse(onInput, 500));
+
+// closing dropdown menu by clicking somewhere empty on browser
+document.addEventListener("click", e => {
+  if (!root.contains(e.target)) {
+    dropDown.classList.remove("is-active");
+  }
+});
