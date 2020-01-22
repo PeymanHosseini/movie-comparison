@@ -12,6 +12,7 @@ const fetchData = async search => {
 
   return response.data.Search;
 };
+//creating autoComplete dropDown
 const root = document.querySelector(".autocomplete");
 root.innerHTML = `
 <label><b>Search for the movie</b></label>
@@ -30,6 +31,12 @@ const resultWrapper = document.querySelector(".results");
 // onInput function help us to delay search input for 1 sec
 const onInput = async e => {
   const movies = await fetchData(e.target.value);
+  // closing dropdown if input section is empty
+  if (!movies.length) {
+    dropDown.classList.remove("is-active");
+    return;
+  }
+
   resultWrapper.innerHTML = "";
   dropDown.classList.add("is-active");
 
@@ -41,6 +48,12 @@ const onInput = async e => {
     <img src="${imgSrc}"></img>
     ${movie.Title}
     `;
+    // when user click the movie link we send followup req to API
+    option.addEventListener("click", () => {
+      dropDown.classList.remove("is-active");
+      input.value = movie.Title;
+      onClickMovie(movie);
+    });
 
     resultWrapper.appendChild(option);
   }
@@ -53,3 +66,13 @@ document.addEventListener("click", e => {
     dropDown.classList.remove("is-active");
   }
 });
+
+const onClickMovie = async movie => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "a596eaf0",
+      i: movie.imdbID
+    }
+  });
+  console.log(response.data);
+};
