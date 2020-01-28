@@ -13,7 +13,14 @@ const fetchData = async search => {
   return response.data.Search;
 };
 createAutoCompelete({
-  root: document.querySelector(".autocomplete")
+  root: document.querySelector(".autocomplete"),
+  renderOption(movie) {
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+    return `
+    <img src="${imgSrc}"></img>
+    ${movie.Title} (${movie.Year})
+    `;
+  }
 });
 
 // folowup req function

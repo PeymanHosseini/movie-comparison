@@ -1,6 +1,7 @@
 // reusable autoCompelete function
-const createAutoCompelete = ({ root }) => {
+const createAutoCompelete = ({ root, renderOption }) => {
   //'root' is elemenet that autocompelete should be rendered into
+  // 'renderOption' function that knows how to render each item like each movie
   root.innerHTML = `
 <label><b>Search for the movie</b></label>
 <input class="input" />
@@ -29,12 +30,9 @@ const createAutoCompelete = ({ root }) => {
 
     for (let movie of movies) {
       const option = document.createElement("a");
-      const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+
       option.classList.add("dropdown-item");
-      option.innerHTML = `
-    <img src="${imgSrc}"></img>
-    ${movie.Title}
-    `;
+      option.innerHTML = renderOption(movie);
       // when user click the movie link we send followup req to API
       option.addEventListener("click", () => {
         dropDown.classList.remove("is-active");
