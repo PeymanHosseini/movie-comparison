@@ -1,7 +1,14 @@
 // reusable autoCompelete function
-const createAutoCompelete = ({ root, renderOption }) => {
+const createAutoCompelete = ({
+  root,
+  renderOption,
+  onItemSelect,
+  inputValue
+}) => {
   //'root' is elemenet that autocompelete should be rendered into
   // 'renderOption' function that knows how to render each item like each movie
+  // 'onItemSelect' when user click on option or item on dropdown menu it gets invoked
+  // 'inputValue' item title assign to search box when user click on item
   root.innerHTML = `
 <label><b>Search for the movie</b></label>
 <input class="input" />
@@ -36,8 +43,8 @@ const createAutoCompelete = ({ root, renderOption }) => {
       // when user click the movie link we send followup req to API
       option.addEventListener("click", () => {
         dropDown.classList.remove("is-active");
-        input.value = movie.Title;
-        onClickMovie(movie);
+        input.value = inputValue(movie);
+        onItemSelect(movie);
       });
 
       resultWrapper.appendChild(option);

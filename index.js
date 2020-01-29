@@ -20,6 +20,12 @@ createAutoCompelete({
     <img src="${imgSrc}"></img>
     ${movie.Title} (${movie.Year})
     `;
+  },
+  onItemSelect(movie) {
+    onClickMovie(movie);
+  },
+  inputValue(movie) {
+    return movie.Title;
   }
 });
 
