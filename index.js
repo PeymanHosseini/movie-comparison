@@ -1,17 +1,3 @@
-// get data from API using axios lib.
-const fetchData = async search => {
-  const response = await axios.get("http://www.omdbapi.com/", {
-    params: {
-      apikey: "a596eaf0",
-      s: search
-    }
-  });
-  if (response.data.Error) {
-    return [];
-  }
-
-  return response.data.Search;
-};
 createAutoCompelete({
   root: document.querySelector(".autocomplete"),
   renderOption(movie) {
@@ -26,6 +12,19 @@ createAutoCompelete({
   },
   inputValue(movie) {
     return movie.Title;
+  },
+  async fetchData(search) {
+    const response = await axios.get("http://www.omdbapi.com/", {
+      params: {
+        apikey: "a596eaf0",
+        s: search
+      }
+    });
+    if (response.data.Error) {
+      return [];
+    }
+
+    return response.data.Search;
   }
 });
 

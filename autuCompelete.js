@@ -1,16 +1,18 @@
 // reusable autoCompelete function
 const createAutoCompelete = ({
-  root,
-  renderOption,
-  onItemSelect,
-  inputValue
-}) => {
   //'root' is elemenet that autocompelete should be rendered into
   // 'renderOption' function that knows how to render each item like each movie
   // 'onItemSelect' when user click on option or item on dropdown menu it gets invoked
   // 'inputValue' item title assign to search box when user click on item
+  // 'fetchdata' get data from API using axios lib.
+  root,
+  renderOption,
+  onItemSelect,
+  inputValue,
+  fetchData
+}) => {
   root.innerHTML = `
-<label><b>Search for the movie</b></label>
+<label><b>Search </b></label>
 <input class="input" />
 <div class="dropdown">
   <div class="dropdown-menu">
@@ -25,9 +27,9 @@ const createAutoCompelete = ({
 
   // onInput function help us to delay search input for 1 sec
   const onInput = async e => {
-    const movies = await fetchData(e.target.value);
+    const items = await fetchData(e.target.value);
     // closing dropdown if input section is empty
-    if (!movies.length) {
+    if (!items.length) {
       dropDown.classList.remove("is-active");
       return;
     }
@@ -35,16 +37,16 @@ const createAutoCompelete = ({
     resultWrapper.innerHTML = "";
     dropDown.classList.add("is-active");
 
-    for (let movie of movies) {
+    for (let item of items) {
       const option = document.createElement("a");
 
       option.classList.add("dropdown-item");
-      option.innerHTML = renderOption(movie);
-      // when user click the movie link we send followup req to API
+      option.innerHTML = renderOption(item);
+      // when user click the item link we send followup req to API
       option.addEventListener("click", () => {
         dropDown.classList.remove("is-active");
-        input.value = inputValue(movie);
-        onItemSelect(movie);
+        input.value = inputValue(item);
+        onItemSelect(item);
       });
 
       resultWrapper.appendChild(option);
